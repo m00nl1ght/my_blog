@@ -22,7 +22,7 @@ export class UserEntity {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
@@ -31,14 +31,14 @@ export class UserEntity {
   @Column({ nullable: true })
   profileImage: string;
 
-  @BeforeInsert()
-  emailToLowerCase() {
-    this.email = this.email.toLocaleLowerCase();
-  }
-
   @OneToMany(
     (type) => BlogEntryEntity,
     (blogEntryEntity) => blogEntryEntity.author,
   )
-  blogEntries: BlogEntryEntity;
+  blogEntries: BlogEntryEntity[];
+
+  @BeforeInsert()
+  emailToLowerCase() {
+    this.email = this.email.toLocaleLowerCase();
+  }
 }
