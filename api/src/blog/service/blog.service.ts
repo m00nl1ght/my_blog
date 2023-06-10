@@ -39,6 +39,16 @@ export class BlogService {
       this.blogRepository.findOne({ where: { id }, relations: ['author'] }),
     );
   }
+
+  updateOne(id: number, blogEntry: BlogEntry): Observable<BlogEntry> {
+    return from(this.blogRepository.update(id, blogEntry)).pipe(
+      switchMap(() => this.findOne(id)),
+    );
+  }
+
+  deleteOne(id: number): Observable<any> {
+    return from(this.blogRepository.delete(id));
+  }
   // findByUser(userId: number): Observable<BlogEntry[]> {
   //   return from(
   //     this.blogRepository.find({
