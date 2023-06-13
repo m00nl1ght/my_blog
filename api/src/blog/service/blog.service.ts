@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { Observable, from, of, switchMap } from 'rxjs';
+import { Observable, from, map, of, switchMap } from 'rxjs';
 import { BlogEntry } from '../model/blog-entry.interface';
 import { User } from 'src/user/models/user.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BlogEntryEntity } from '../model/blog-entry.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../../user/service/user.service';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 const slugify = require('slugify');
 
 @Injectable()
@@ -32,6 +37,26 @@ export class BlogService {
 
   findAll(): Observable<BlogEntry[]> {
     return from(this.blogRepository.find({ relations: ['author'] }));
+  }
+
+  paginateAll(options: IPaginationOptions): Observable<Pagination<BlogEntry>> {
+    return from(
+      paginate<BlogEntry>(this.blogRepository, options, {
+        relations: ['author'],
+      }),
+    ).pipe(map((blogEntries: Pagination<BlogEntry>) => blogEntries));
+  }
+
+  paginateByUser(
+    options: IPaginationOptions,
+    userId: number,
+  ): Observable<Pagination<BlogEntry>> {
+    return from(
+      paginate<BlogEntry>(this.blogRepository, options, {
+        relations: ['author'],
+        where: [{ author: { id: userId } }],
+      }),
+    ).pipe(map((blogEntries: Pagination<BlogEntry>) => blogEntries));
   }
 
   findOne(id: number): Observable<BlogEntry> {
