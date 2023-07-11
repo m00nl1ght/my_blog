@@ -36,8 +36,9 @@
         placeholder="Your password Confirm"
         formControlName="passwordConfirm"
       />
-      <mat-hint *ngIf="registerForm.controls['passwordConfirm'].errors"
-        >Your passwordConfirm is required</mat-hint
+      <mat-hint
+        *ngIf="registerForm.errors?.['passwordsNotMatching']"
+        >Your passwordConfirm is not matching</mat-hint
       >
     </mat-form-field>
 
@@ -51,3 +52,11 @@
     </button>
   </div>
 </form>
+
+<h3 *ngIf="registerForm.invalid">Forms contain errors</h3>
+<small *ngIf="registerForm.controls['password'].errors?.['passwordInvalid']"
+  >Password is not contain number</small
+>
+<small *ngIf="registerForm.errors?.['passwordsNotMatching']"
+  >Password is not matching</small
+>
