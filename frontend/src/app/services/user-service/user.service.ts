@@ -30,6 +30,10 @@ export class UserService {
     return this.http.get('/api/users/' + id).pipe(map((user: User) => user));
   }
 
+  updateOne(user: User): Observable<User> {
+    return this.http.put('api/users/' + user.id, user);
+  }
+
   findAll(page: number, size: number): Observable<UserData> {
     let params = new HttpParams();
 

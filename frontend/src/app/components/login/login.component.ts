@@ -41,8 +41,4 @@ export class LoginComponent implements OnInit {
       .pipe(map((token) => this.router.navigate(['admin'])))
       .subscribe();
   }
-
-  // login() {
-  //   this.authService.login('', '').subscribe((data) => console.log('success'));
-  // }
 }

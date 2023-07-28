@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 export interface LoginForm {
@@ -9,6 +9,7 @@ export interface LoginForm {
 }
 
 export interface User {
+  id?: string;
   name?: string;
   username?: string;
   email?: string;
@@ -33,7 +34,7 @@ export class AuthenticationService {
       })
       .pipe(
         map((token) => {
-          localStorage.setItem(JWT_NAME, token.assess_token);
+          localStorage.setItem(JWT_NAME, token.access_token);
           return token;
         })
       );
@@ -47,4 +48,19 @@ export class AuthenticationService {
     const token = localStorage.getItem(JWT_NAME);
     return !this.jwtHelper.isTokenExpired(token);
   }
+
+  getUserId(): Observable<number> {
+    return of(localStorage.getItem(JWT_NAME) || '').pipe(
+      switchMap((jwt: string) =>
+        of(this.jwtHelper.decodeToken(jwt)).pipe(map((jwt: any) => jwt.user.id))
+      )
+    );
+  }
+  // getUserId(): Observable<number>{
+  //   return of(localStorage.getItem(JWT_NAME)).pipe(
+  //     switchMap((jwt: string | null) => of(this.jwtHelper.decodeToken(jwt)).pipe(
+  //       map((jwt: any) => jwt.user.id)
+  //     )
+  //   ));
+  // }
 }
