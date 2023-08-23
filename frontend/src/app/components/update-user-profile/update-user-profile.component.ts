@@ -1,12 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  AuthenticationService,
-  User,
-} from 'src/app/services/authentication-service/authentication.service';
+import { AuthenticationService } from 'src/app/services/authentication-service/authentication.service';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
+import { User } from 'src/app/model/user.interface';
 
 export interface File {
   data: any;
@@ -40,7 +38,7 @@ export class UpdateUserProfileComponent implements OnInit {
       id: [{ value: null, disabled: true }, [Validators.required]],
       name: [null, [Validators.required]],
       username: [null, [Validators.required]],
-      profileImage: [null]
+      profileImage: [null],
     });
 
     this.authService

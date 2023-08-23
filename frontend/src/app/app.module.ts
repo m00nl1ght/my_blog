@@ -23,6 +23,8 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { JwtInterceptor } from './intercelptors/jwt.interceptor';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { HomeComponent } from './components/home/home.component';
+import { AllBlogEntriesComponent } from './components/all-blog-entries/all-blog-entries.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { MatIconModule } from '@angular/material/icon';
     UsersComponent,
     UserProfileComponent,
     UpdateUserProfileComponent,
+    HomeComponent,
+    AllBlogEntriesComponent,
   ],
   imports: [
     BrowserModule,
